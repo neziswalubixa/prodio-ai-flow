@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
@@ -125,9 +125,12 @@ function RootComponent() {
         <div className="min-h-screen flex w-full bg-background">
           <AppSidebar />
           <div className="flex-1 flex flex-col min-w-0">
-            <header className="h-14 flex items-center gap-3 border-b border-border bg-card/50 backdrop-blur px-4 sticky top-0 z-10">
+            <header className="h-14 flex items-center gap-3 border-b border-border bg-background/70 backdrop-blur px-4 sticky top-0 z-10">
               <SidebarTrigger />
-              <span className="text-sm font-medium text-muted-foreground">Workplace AI</span>
+              <div className="flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                <span className="text-xs text-muted-foreground">AI-generated content may require human review</span>
+              </div>
             </header>
             <main className="flex-1 min-w-0">
               <Outlet />
