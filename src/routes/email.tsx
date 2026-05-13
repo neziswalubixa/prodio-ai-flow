@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Mail, Wand2 } from "lucide-react";
+import { Mail, Wand2, RefreshCw } from "lucide-react";
 import { runAI } from "@/lib/ai.functions";
-import { PageShell, AIDisclaimer } from "@/components/page-shell";
+import { PageShell } from "@/components/page-shell";
 import { AIOutput } from "@/components/ai-output";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,22 +13,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/email")({
-  head: () => ({ meta: [{ title: "Smart Email Generator — Workplace AI" }] }),
+  head: () => ({ meta: [{ title: "Smart Email Generator — Workflow AI" }] }),
   component: EmailPage,
 });
 
 function EmailPage() {
   const ai = useServerFn(runAI);
-  const [recipient, setRecipient] = useState("");
-  const [purpose, setPurpose] = useState("");
-  const [tone, setTone] = useState("professional");
-  const [length, setLength] = useState("medium");
+  const [recipient, setRecipient] = useState("Acme Co. procurement team");
+  const [keyPoints, setKeyPoints] = useState(
+    "- Following up on the proposal sent last Tuesday\n- Confirm pricing for the Q2 order\n- Ask if they need any clarifications before Friday's review meeting\n- Offer a quick 15-min call to walk through it",
+  );
+  const [tone, setTone] = useState("formal");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
   const generate = async () => {
-    if (!purpose.trim()) {
-      toast.error("Please describe what the email is about.");
+    if (!keyPoints.trim()) {
+      toast.error("Please add some key points first.");
       return;
     }
     setLoading(true);
@@ -39,11 +40,11 @@ function EmailPage() {
           {
             role: "system",
             content:
-              "You are an expert business email writer. Always return ONLY the email itself in markdown, including a subject line on the first line as **Subject:** ... then a blank line, then the body. Do not add commentary.",
+              "You are an expert business email writer. Return ONLY the email in markdown. First line MUST be `**Subject:** <subject>`, then a blank line, then the body. Body length 120-180 words. Match the requested tone exactly. Do not add commentary.",
           },
           {
             role: "user",
-            content: `Write a ${tone} email of ${length} length.\nRecipient: ${recipient || "the recipient"}\nPurpose / context:\n${purpose}`,
+            content: `Tone: ${tone}\nRecipient: ${recipient || "the recipient"}\nKey points / purpose:\n${keyPoints}`,
           },
         ],
       },
@@ -61,51 +62,42 @@ function EmailPage() {
       <div className="grid gap-6 lg:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-5 space-y-4">
           <div className="space-y-2">
-            <Label>Recipient</Label>
-            <Input placeholder="e.g. Acme Co. procurement team" value={recipient} onChange={(e) => setRecipient(e.target.value)} />
+            <Label htmlFor="recipient">Recipient</Label>
+            <Input id="recipient" value={recipient} onChange={(e) => setRecipient(e.target.value)} />
           </div>
           <div className="space-y-2">
-            <Label>What is the email about?</Label>
+            <Label htmlFor="points">Key points & purpose</Label>
             <Textarea
-              placeholder="Follow up on the proposal sent last week and ask if they have questions before the Friday meeting…"
-              value={purpose}
-              onChange={(e) => setPurpose(e.target.value)}
-              className="min-h-[140px]"
+              id="points"
+              value={keyPoints}
+              onChange={(e) => setKeyPoints(e.target.value)}
+              className="min-h-[180px]"
             />
           </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <Label>Tone</Label>
-              <Select value={tone} onValueChange={setTone}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="professional">Professional</SelectItem>
-                  <SelectItem value="friendly">Friendly</SelectItem>
-                  <SelectItem value="formal">Formal</SelectItem>
-                  <SelectItem value="concise">Concise</SelectItem>
-                  <SelectItem value="persuasive">Persuasive</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Length</Label>
-              <Select value={length} onValueChange={setLength}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="short">Short</SelectItem>
-                  <SelectItem value="medium">Medium</SelectItem>
-                  <SelectItem value="long">Long</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-2">
+            <Label>Tone</Label>
+            <Select value={tone} onValueChange={setTone}>
+              <SelectTrigger><SelectValue /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="formal">Formal</SelectItem>
+                <SelectItem value="friendly">Friendly</SelectItem>
+                <SelectItem value="persuasive">Persuasive</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
-          <Button onClick={generate} disabled={loading} className="w-full">
-            <Wand2 className="h-4 w-4 mr-2" /> {loading ? "Generating…" : "Generate Email"}
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={generate} disabled={loading} className="flex-1">
+              <Wand2 className="h-4 w-4 mr-2" /> {loading ? "Generating…" : "Generate Email"}
+            </Button>
+            {output && (
+              <Button onClick={generate} disabled={loading} variant="outline">
+                <RefreshCw className="h-4 w-4 mr-2" /> Regenerate
+              </Button>
+            )}
+          </div>
         </div>
         <AIOutput value={output} onChange={setOutput} loading={loading} />
       </div>
-      <AIDisclaimer />
     </PageShell>
   );
 }
