@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Mail, FileText, ListTodo, Search, MessageSquare, Sparkles } from "lucide-react";
+import { LayoutDashboard, Mail, FileText, ListTodo, Sparkles } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,8 +18,6 @@ const items = [
   { title: "Email Generator", url: "/email", icon: Mail },
   { title: "Notes Summarizer", url: "/meetings", icon: FileText },
   { title: "Task Planner", url: "/tasks", icon: ListTodo },
-  { title: "Research", url: "/research", icon: Search },
-  { title: "AI Chat", url: "/chat", icon: MessageSquare },
 ];
 
 export function AppSidebar() {
@@ -37,9 +35,9 @@ export function AppSidebar() {
           </div>
           <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
             <span className="text-sm font-semibold text-sidebar-foreground" style={{ fontFamily: "var(--font-display)" }}>
-              Workly AI
+              Workflow AI
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/50">by CAPACITI</span>
+            <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/50">Assistant</span>
           </div>
         </div>
       </SidebarHeader>
@@ -67,7 +65,7 @@ export function AppSidebar() {
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border">
         <p className="px-2 py-2 text-[10px] uppercase tracking-wider text-sidebar-foreground/50 group-data-[collapsible=icon]:hidden">
-          Powered by <span className="text-sidebar-foreground/80">CAPACITI</span>
+          Automate your workday
         </p>
       </SidebarFooter>
     </Sidebar>
