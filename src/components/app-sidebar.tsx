@@ -16,7 +16,7 @@ import {
 const items = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Email Generator", url: "/email", icon: Mail },
-  { title: "Meeting Notes", url: "/meetings", icon: FileText },
+  { title: "Notes Summarizer", url: "/meetings", icon: FileText },
   { title: "Task Planner", url: "/tasks", icon: ListTodo },
   { title: "Research", url: "/research", icon: Search },
   { title: "AI Chat", url: "/chat", icon: MessageSquare },
@@ -28,15 +28,18 @@ export function AppSidebar() {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="border-b border-sidebar-border">
-        <div className="flex items-center gap-2 px-2 py-2">
-          <div className="h-8 w-8 rounded-md bg-sidebar-primary/20 grid place-items-center text-sidebar-foreground">
+        <div className="flex items-center gap-2.5 px-2 py-2.5">
+          <div
+            className="h-9 w-9 rounded-full grid place-items-center text-white shrink-0"
+            style={{ background: "var(--gradient-brand)" }}
+          >
             <Sparkles className="h-4 w-4" />
           </div>
           <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
             <span className="text-sm font-semibold text-sidebar-foreground" style={{ fontFamily: "var(--font-display)" }}>
-              Workplace AI
+              Workly AI
             </span>
-            <span className="text-[11px] text-sidebar-foreground/60">Productivity Assistant</span>
+            <span className="text-[10px] uppercase tracking-wider text-sidebar-foreground/50">by CAPACITI</span>
           </div>
         </div>
       </SidebarHeader>
@@ -63,8 +66,8 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="border-t border-sidebar-border">
-        <p className="px-2 py-2 text-[10px] text-sidebar-foreground/50 group-data-[collapsible=icon]:hidden">
-          AI outputs may be inaccurate. Review before use.
+        <p className="px-2 py-2 text-[10px] uppercase tracking-wider text-sidebar-foreground/50 group-data-[collapsible=icon]:hidden">
+          Powered by <span className="text-sidebar-foreground/80">CAPACITI</span>
         </p>
       </SidebarFooter>
     </Sidebar>
