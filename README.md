@@ -38,3 +38,32 @@ Note: This is a demo version using mock responses. No API key required.
 AI-generated content may contain errors or bias. Always review outputs before sending to clients or stakeholders. Do not input sensitive or confidential information.
 
 ## Project Structure
+workflow-ai-assistant/
+│
+├── public/
+│   └── favicon.ico
+│
+├── src/
+│   ├── components/
+│   │   ├── Sidebar.jsx          # Navigation for Email, Notes, Tasks
+│   │   ├── Header.jsx           # App name, tagline, dark mode toggle
+│   │   ├── EmailGenerator.jsx   # Input/output for email feature
+│   │   ├── NotesSummarizer.jsx  # Input/output for notes feature  
+│   │   ├── TaskPlanner.jsx      # Input/output for task planner
+│   │   └── CopyButton.jsx       # Reusable copy-to-clipboard button
+│   │
+│   ├── lib/
+│   │   ├── prompts.js           # The 3 prompt templates
+│   │   └── mockData.js          # Example inputs/outputs for demo
+│   │
+│   ├── pages/
+│   │   └── Dashboard.jsx        # Main page that switches between features
+│   │
+│   ├── App.jsx                  # Root component, handles routing/state
+│   ├── main.jsx                 # React entry point
+│   └── index.css                # Tailwind imports + global styles
+│
+├── .gitignore
+├── package.json
+├── README.md
+└── vite.config.js               # If you used Vite with Lovable
